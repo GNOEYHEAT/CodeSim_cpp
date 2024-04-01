@@ -6,6 +6,8 @@ The following codes are the solutions **(1st place, private score: 0.9911)** for
 
 The final submission is **GraphCodeBERT+UniXcoder**.
 
+https://huggingface.co/GNOEYHEAT/CodeSim_cpp
+
 | CodeBERT Model          | Private Accuracy | Public Accuracy | Val Accuracy |
 |-------------------------|------------------|-----------------|--------------|
 | GraphCodeBERT           | -                | 0.9889212828    | -            |
