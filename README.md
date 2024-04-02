@@ -27,16 +27,14 @@ The final submission is **GraphCodeBERT+UniXcoder**.
 ### Preprocessed Datasets
 [Datasets](https://huggingface.co/datasets/GNOEYHEAT/CodeSim_cpp)
 
-The hyperparameters are as follows:
-
-truncation_side='left', bm25='bm25plus'
+* The hyperparameters are as follows:
+    - truncation_side='left', bm25='bm25plus'
 
 ### Pre-trained Models
 [Models](https://huggingface.co/GNOEYHEAT/CodeSim_cpp)
 
-The hyperparameters are as follows:
-
-truncation_side='left', optimizer='adamw', learning_rate=0.00003
+* The hyperparameters are as follows:
+    - truncation_side='left', optimizer='adamw', learning_rate=0.00003
 
 ### Results
 
