@@ -31,7 +31,7 @@ The final submission is **GraphCodeBERT+UniXcoder**.
     - truncation_side='left', bm25='bm25plus'
 
 ### Pre-trained Models
-[Models](https://huggingface.co/GNOEYHEAT/CodeSim_cpp)
+[Models](https://huggingface.co/GNOEYHEAT/CodeSim_cpp/tree/main/models)
 
 * The hyperparameters are as follows:
     - truncation_side='left', optimizer='adamw', learning_rate=0.00003
