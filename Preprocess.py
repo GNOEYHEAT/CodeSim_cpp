@@ -10,7 +10,7 @@ import re
 from glob import glob
 from tqdm import tqdm
 from itertools import combinations
-from utils import set_args, set_seeds
+from utils import set_args, set_seeds, read_cpp_code, clean_data, create_df, get_pairs, f_split, test_code_df, pp_mkdir
 
 import torch
 import torch.nn as nn
@@ -33,22 +33,27 @@ def code_cpp_preprocessing():
 
     ''' Args Set '''
     args = set_args()
+
     ''' Seed Set '''
     set_seeds(args.seed)
 
-    idx = f"{args.text_pretrained_model}_{args.bm25}"
+    ''' Make Preprocessed Data Directory '''
+    pp_mkdir(args)
+    
+    ''' CUDA'''
     device = torch.device('cuda') if torch.cuda.is_available() else torch.device('cpu')
 
-
-    '''
-    Embedding Size
-    graphcodebert-base" == 512
-    codebert-base" == 512
-    unixcoder-base == 1024
-    '''
+    ''' Tokenizer '''
     tokenizer = AutoTokenizer.from_pretrained(args.text_pretrained_model)
     tokenizer.truncation_side = args.truncation_side
-    print('1')
+
+    ''' Train Data Preprocessing and Generation '''
+    train_df = create_df(args)
+    train_df_bm25 = get_pairs(train_df, tokenizer, args)
+    f_split(train_df_bm25, args)
+
+    '''Test Code preprocessing '''
+    test_code_df(args)
 
 if __name__ == "__main__":
     code_cpp_preprocessing()
