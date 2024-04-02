@@ -10,7 +10,7 @@ import re
 from glob import glob
 from tqdm import tqdm
 from itertools import combinations
-from utils import set_args, set_seeds, read_cpp_code, clean_data, create_df, get_pairs, f_split, test_code_df, pp_mkdir
+from Utils.Preprocessing_utils import *
 
 import torch
 import torch.nn as nn
@@ -32,7 +32,7 @@ warnings.filterwarnings('ignore')
 def code_cpp_preprocessing():
 
     ''' Args Set '''
-    args = set_args()
+    args = set_pp_args()
 
     ''' Seed Set '''
     set_seeds(args.seed)

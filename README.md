@@ -2,6 +2,24 @@
 
 The following codes are the solutions **(1st place, private score: 0.9911)** for the dacon competition.
 
+## Directory Structure
+
+```bash
+├── Dataset
+│   ├── train_code
+│   │   ├── problem001
+│   │   ├── ...
+│   │   └── problem500
+│   ├── sample_submission.csv
+│   ├── sample_train.csv
+│   └── test.csv
+├── Utils
+│   ├── CodeLM_utils.py
+│   └── Preprocessing_utils.py
+├── Preprocess.py
+└── CodeLM.py
+``` 
+
 ## Experiments
 
 The final submission is **GraphCodeBERT+UniXcoder**.

@@ -11,9 +11,21 @@ from itertools import combinations
 import re
 import os
 
-def set_args():
+from sklearn.model_selection import StratifiedKFold
+from sklearn.metrics import accuracy_score
+
+import torch
+import torch.nn as nn
+from torch.nn import functional as F
+from torch.utils.data import Dataset, DataLoader
+import pytorch_lightning as pl
+
+import transformers
+from transformers import AutoTokenizer, AutoModel, AutoModelForSequenceClassification
+
+def set_pp_args():
     parser = ArgumentParser(description="preprocess")
-    parser.add_argument('--text_pretrained_model', type=str, default='microsoft/graphcodebert-base')
+    parser.add_argument('--text_pretrained_model', type=str, default='microsoft/graphcodebert-base') # microsoft/codebert-base, microsoft/graphcodebert-base, microsoft/unixcoder-base
     parser.add_argument('--truncation_side', type=str, default='left') # right or left
     parser.add_argument('--bm25', type=str, default='bm25plus')
     parser.add_argument('--frac', type=float, default=0.01 )
@@ -216,3 +228,117 @@ def pp_mkdir(args):
          
      if not os.path.exists(f"./Dataset/pp_test_{model_name}"):
         os.makedirs(f"./Dataset/pp_test_{model_name}")
+
+        
+
+class TextDataset(Dataset):
+    def __init__(self, df, tokenizer, args, is_test=False):
+        self.df = df
+        self.tokenizer = tokenizer
+        self.args = args
+        self.is_test = is_test
+        if args.truncation_side == "left":
+            self.tokenizer.truncation_side = 'left'
+
+    def __len__(self):
+        return len(self.df)
+
+    def __getitem__(self, idx):
+        row = self.df.iloc[idx]
+
+        encoding = self.tokenizer.encode_plus(
+            row['code1'], row['code2'],
+            add_special_tokens=True,
+            padding="max_length",
+            truncation=True,
+            max_length=self.args.text_len,
+            return_tensors="pt",
+        )
+
+        for k,v in encoding.items():
+            encoding[k] = v.squeeze()
+
+        if not self.is_test:
+            labels = torch.tensor(row["similar"], dtype=torch.float)
+            return encoding, labels
+
+        return encoding
+    
+class TextModel(nn.Module):
+    def __init__(self, args):
+        super().__init__()
+        self.args = args
+        self.txt_model = AutoModel.from_pretrained(args.text_pretrained_model)
+        self.classifier = nn.Sequential(
+            nn.Linear(args.latent_dim, 1)
+        )
+
+    def forward(self, inputs):
+        txt_side = self.txt_model(**inputs)
+        txt_feature = txt_side.last_hidden_state[:, 0, :]
+        outputs = self.classifier(txt_feature)
+        return outputs
+
+class TextClassifier(pl.LightningModule):
+    def __init__(self, backbone, args):
+        super().__init__()
+        self.backbone = backbone
+        self.args = args
+    def forward(self, x):
+        outputs = self.backbone(x)
+        return outputs
+
+    def step(self, batch):
+        x = batch[0]
+        y = batch[1]
+        y_hat = self.forward(x)
+        loss = nn.BCEWithLogitsLoss()(y_hat.squeeze(), y)
+        return loss, y, y_hat
+
+    def training_step(self, batch, batch_idx):
+        loss, y, y_hat = self.step(batch)
+        y_pred = (y_hat > 0).float().squeeze()
+        acc = (y_pred == y).float().mean()
+        self.log('train_loss', loss, on_step=False, on_epoch=True, prog_bar=True)
+        self.log("train_acc", acc, on_step=False, on_epoch=True, prog_bar=True)
+        return loss
+
+    def validation_step(self, batch, batch_idx):
+        loss, y, y_hat = self.step(batch)
+        y_pred = (y_hat > 0).float().squeeze()
+        acc = (y_pred == y).float().mean()
+        self.log('val_loss', loss, on_epoch=True, prog_bar=True)
+        self.log("val_acc", acc, on_epoch=True, prog_bar=True)
+        return loss
+
+    def test_step(self, batch, batch_idx):
+        loss, y, y_hat = self.step(batch)
+
+    def predict_step(self, batch, batch_idx, dataloader_idx=0):
+        y_hat = self.forward(batch)
+        return y_hat
+
+    def configure_optimizers(self):
+        if self.args.optimizer == "sgd":
+            optimizer = torch.optim.SGD(self.parameters(), lr=self.args.learning_rate, momentum=0.9)
+        if self.args.optimizer == "adam":
+            optimizer = torch.optim.Adam(self.parameters(), lr=self.args.learning_rate)
+        if self.args.optimizer == "adamw":
+            optimizer = torch.optim.AdamW(self.parameters(), lr=self.args.learning_rate)
+        
+        if self.args.scheduler == "none":
+            return optimizer
+        if self.args.scheduler == "cosine":
+            scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(
+                optimizer=optimizer,
+                T_max=self.args.epochs//2,
+                eta_min=self.args.learning_rate//10,
+            )
+            return [optimizer], [scheduler]
+        
+def saved_mkdir():
+
+     if not os.path.exists(f"./saved"):
+        os.makedirs(f"./saved/")
+         
+    
