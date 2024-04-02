@@ -28,17 +28,21 @@ The final submission is **GraphCodeBERT+UniXcoder**.
 [Datasets](https://huggingface.co/datasets/GNOEYHEAT/CodeSim_cpp)
 
 The hyperparameters are as follows:
+
 truncation_side='left', bm25='bm25plus'
 
 ### Pre-trained Models
 [Models](https://huggingface.co/GNOEYHEAT/CodeSim_cpp)
 
 The hyperparameters are as follows:
+
 truncation_side='left', optimizer='adamw', learning_rate=0.00003
 
-| index     | CodeBERT Model          | frac | Pr Acc  | Pl Acc  | Val Acc |
-|-----------|-------------------------|------|---------|---------|---------|
-| exp_30    | GraphCodeBERT           | 0.01 | 0.98859 | 0.98831 | 0.99641 |
-| exp_31    | GraphCodeBERT           | 0.02 | 0.98909 | 0.98892 | 0.99794 |
-| exp_32    | UniXcoder               | 0.01 | 0.98942 | 0.98911 | 0.99606 |
-| exp_31+32 | GraphCodeBERT+UniXcoder | -    | 0.99111 | 0.99084 | -       |
+### Results
+
+| index     | CodeBERT Model          | frac | text_len | Pr Acc  | Pl Acc  | Val Acc |
+|-----------|-------------------------|------|----------|---------|---------|---------|
+| exp_30    | GraphCodeBERT           | 0.01 | 512      | 0.98859 | 0.98831 | 0.99641 |
+| exp_31    | GraphCodeBERT           | 0.02 | 512      | 0.98909 | 0.98892 | 0.99794 |
+| exp_32    | UniXcoder               | 0.01 | 1024     | 0.98942 | 0.98911 | 0.99606 |
+| exp_31+32 | GraphCodeBERT+UniXcoder | -    | -        | 0.99111 | 0.99084 | -       |
