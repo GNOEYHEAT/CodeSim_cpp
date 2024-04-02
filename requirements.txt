@@ -9,3 +9,4 @@ pytorch_lightning
 rank_bm25
 ArgumentParser
 pyarrow
+tqdm
