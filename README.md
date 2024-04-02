@@ -24,9 +24,17 @@ The following codes are the solutions **(1st place, private score: 0.9911)** for
 
 The final submission is **GraphCodeBERT+UniXcoder**.
 
-https://huggingface.co/GNOEYHEAT/CodeSim_cpp
+### Preprocessed Datasets
+[Datasets](https://huggingface.co/datasets/GNOEYHEAT/CodeSim_cpp)
 
-truncation_side='left', bm25='bm25plus', seed=826
+The hyperparameters are as follows:
+truncation_side='left', bm25='bm25plus'
+
+### Pre-trained Models
+[Models](https://huggingface.co/GNOEYHEAT/CodeSim_cpp)
+
+The hyperparameters are as follows:
+truncation_side='left', optimizer='adamw', learning_rate=0.00003
 
 | index     | CodeBERT Model          | frac | Pr Acc  | Pl Acc  | Val Acc |
 |-----------|-------------------------|------|---------|---------|---------|
