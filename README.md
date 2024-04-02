@@ -26,8 +26,21 @@ The final submission is **GraphCodeBERT+UniXcoder**.
 
 https://huggingface.co/GNOEYHEAT/CodeSim_cpp
 
-| CodeBERT Model          | Private Accuracy | Public Accuracy | Val Accuracy |
-|-------------------------|------------------|-----------------|--------------|
-| GraphCodeBERT           | -                | 0.9889212828    | -            |
-| UniXcoder               | -                | 0.9891133596    | -            |
-| GraphCodeBERT+UniXcoder | 0.9911           | 0.9908420511    | -            |
+# CodeSim_cpp
+
+The following codes are the solutions **(1st place, private score: 0.9911)** for the dacon competition.
+
+## Experiments
+
+The final submission is **GraphCodeBERT+UniXcoder**.
+
+https://huggingface.co/GNOEYHEAT/CodeSim_cpp
+
+truncation_side='left', bm25='bm25plus', seed=826
+
+| index     | CodeBERT Model          | frac | Pr Acc  | Pl Acc  | Val Acc |
+|-----------|-------------------------|------|---------|---------|---------|
+| exp_30    | GraphCodeBERT           | 0.01 | 0.98859 | 0.98831 | 0.99641 |
+| exp_31    | GraphCodeBERT           | 0.02 | 0.98909 | 0.98892 | 0.99794 |
+| exp_32    | UniXcoder               | 0.01 | 0.98942 | 0.98911 | 0.99606 |
+| exp_31+32 | GraphCodeBERT+UniXcoder | -    | 0.99111 | 0.99084 | -       |
