@@ -18,17 +18,7 @@ The following codes are the solutions **(1st place, private score: 0.9911)** for
 │   └── Preprocessing_utils.py
 ├── Preprocess.py
 └── CodeLM.py
-``` 
-
-## Experiments
-
-The final submission is **GraphCodeBERT+UniXcoder**.
-
-https://huggingface.co/GNOEYHEAT/CodeSim_cpp
-
-# CodeSim_cpp
-
-The following codes are the solutions **(1st place, private score: 0.9911)** for the dacon competition.
+```
 
 ## Experiments
 
