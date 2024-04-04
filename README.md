@@ -6,7 +6,7 @@ The following codes are the solutions **(1st place, private score: 0.9911)** for
 ### 1.1 Clone this repository 
 
 ```bash
-git clone 
+git clone https://github.com/GNOEYHEAT/CodeSim_cpp.git
 cd CodeSim_cpp
 ```
 
