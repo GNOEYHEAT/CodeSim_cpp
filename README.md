@@ -2,6 +2,19 @@
 
 The following codes are the solutions **(1st place, private score: 0.9911)** for the dacon competition.
 
+## 1. Environmental settings
+### 1.1 Clone this repository 
+
+```bash
+git clone 
+cd CodeSim_cpp
+```
+
+### 1.2 Install packages
+```bash
+pip install -r requirements.txt 
+```
+
 ## Directory Structure
 
 ```bash
@@ -19,8 +32,20 @@ The following codes are the solutions **(1st place, private score: 0.9911)** for
 ├── Preprocess.py
 └── CodeLM.py
 ```
+## 2. Data Proprocessing
 
-## Experiments
+```bash
+python Preprocess.py 
+```
+
+## 3. Train Model
+
+```bash
+python CodeLM.py
+```
+
+
+## 4. Experiment Results
 
 The final submission is **GraphCodeBERT+UniXcoder**.
 
